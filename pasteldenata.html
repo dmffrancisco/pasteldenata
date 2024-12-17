@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastéis de Nata Recipe Assistant</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #FAF3E0; /* Light creamy white */
+        color: #5A3825; /* Dark brown */
+        }
+
+        .container {
+        max-width: 95%;
+        margin: 50px auto;
+        padding: 20px;
+        background: #FAF3E0; /* Match background for a clean look */
+        border-radius: 8px;
+        display: flex;
+        gap: 20px;
+        }
+
+        .section {
+        flex: 1;
+        padding: 20px;
+        background: #F8D99A; /* Warm golden beige */
+        border: 1px solid #C58929; /* Complementary darker golden yellow */
+        border-radius: 8px;
+        min-height: 300px;
+        }
+
+        h1, h2 {
+        text-align: center;
+        color: #5A3825; /* Dark brown */
+        }
+
+        button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #E2A53C; /* Deep golden yellow */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        }
+
+        button:hover {
+        background-color: #C58929; /* Slightly darker golden yellow */
+        }
+
+        .output {
+        margin-top: 20px;
+        }
+
+        .step {
+        margin-bottom: 10px;
+        color: #5A3825; /* Dark brown */
+        }
+    </style>
+</head>
+<body>
+    <h1>Pastéis de Nata Recipe Random Steps Generator</h1>
+    <div class="container">
+        <!-- Ingredients Section -->
+        <div class="section" id="ingredientsSection">
+            <h2>Ingredients</h2>
+            <button onclick="viewIngredients()">View Ingredients</button>
+            <div id="ingredientsOutput" class="output"></div>
+        </div>
+        <!-- Recipe Steps Section -->
+        <div class="section" id="recipeSection">
+            <h2>Recipe Steps</h2>
+            <button onclick="startRecipe()">Start Recipe</button>
+            <div id="stepsOutput" class="output">
+                <h3>Steps:</h3>
+                <div id="steps"></div>
+                <button id="nextButton" style="display:none;" onclick="nextStep()">Next Step</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ingredients = [
+            "250g All-purpose flour",
+            "200g Butter (unsalted)",
+            "150ml Water (cold)",
+            "300g Sugar",
+            "1 tsp Lemon zest",
+            "1 Cinnamon stick",
+            "500ml Milk (whole)",
+            "6 Egg yolks",
+            "1 tsp Vanilla extract",
+            "2 tbsp Cornstarch",
+            "Luck?",
+            " I mean, you do understand that this is barely a recipe, right?",
+            "Seriously, Vanilla is up there as an ingredient and it won't even show up in the steps, muahahah"
+        ];
+
+        const steps = {
+            dough: [
+                [
+                    "Combine flour, water, and a pinch of salt in a mixing bowl. Mix them as if they are Naked Mole Rat genetic material.",
+                    "Mix the flour, water, and salt. Think of it as a steering comitee meeting.",
+                    "Stir the ingredients together. No need to rush this, there is no looming grant deadline."
+                ],
+                [
+                    "Knead the dough until smooth. If that’s too much, delegate it to someone with ‘hands-on’ skills.",
+                    "Knead like you care. No automation here; it’s all manual labor.",
+                    "Knead the dough. Yes, you actually have to do this yourself."
+                ],
+                [
+                    "Let the dough rest for 30 minutes. Dough deserves a break, even if you don't get one.",
+                    "Rest the dough like the team rests during your coffee breaks. It's essential.",
+                    "Let it chill for 30 minutes, unlike your last meeting."
+                ],
+                [
+                    "Roll the dough to a 2mm thickness. Should be as thin as the IBU budget.",
+                    "Roll it out thin— Unlike most experimental designs we get, precision matters here.",
+                    "Flatten that dough like you're ironing out lab disputes."
+                ],
+                [
+                    "Spread butter across the dough evenly. Precision isn’t just for sequencing.",
+                    "Butter the dough like you butter up the steering comitee before budget reviews.",
+                    "Smear the butter generously. Pretend it's your influence over collaborations."
+                ],
+                [
+                    "Fold the dough carefully—unlike the chaos of multi-omics integration.",
+                    "Do the folds neatly, or at least make it look like you tried.",
+                    "Fold the dough like it owes you an error-free dataset."
+                ],
+                [
+                    "Wrap, log, and refrigerate for 1 hour. Even dough needs downtime, unlike the members of your team.",
+                    "Refrigerate and let the dough think about its life choices for an hour, as if you just had an MAG.",
+                    "Rest that dough like it just pulled an all-nighter."
+                ]
+            ],
+            custard: [
+                [
+                    "Simmer milk, zest, and cinnamon. Don’t let it boil over—like that last collaboration.",
+                    "Infuse the milk. Consider it flavor optimization.",
+                    "Simmer milk gently. This isn’t your team’s timeline—no rushing allowed."
+                ],
+                [
+                    "Mix sugar, cornstarch, and yolks until smooth. You can’t delegate this part.",
+                    "Combine the custard base. Smoothness matters, unlike last week’s ‘quick-and-dirty’ results.",
+                    "Whisk with purpose. Pretend it’s a new pipeline getting debugged."
+                ],
+                [
+                    "Cook the custard over low heat until thickened. Stir constantly to avoid curdling, pretend it is a PhD student getting ready to defend.",
+                    "Stir the custard on low heat—it's not a sprint, it's a marathon, like some of the never ending projects.",
+                    "Cook on low heat until it thickens. No shortcuts allowed, even if a researchers wants it fast!"
+                ],
+                [
+                    "Cool the custard to room temperature. It needs to chill before it delivers the results.",
+                    "Let the custard cool, unlike your temper at the last team meeting.",
+                    "Cool it down—it's as important as debugging your code."
+                ]
+            ],
+            baking: [
+                [
+                    "Slice the dough log into 12. It’s like dividing tasks, but no one will say no here.",
+                    "Cut the dough evenly. ‘Swiss Rustic’ isn’t an acceptable excuse here.",
+                    "Divide into 12 pieces. If you lack the patience, delegate."
+                ],
+                [
+                    "Press the dough into muffin tins. Make sure it’s even— unlike our work-life balance.",
+                    "Shape the shells carefully. Flaky layers depend on effort, or delegation.",
+                    "Mold the dough into tins. Thin pastry desired, unlike a thin budget."
+                ],
+                [
+                    "Fill the pastry shells with custard. This is pretty essential, Like having samples to run your pipeline.",
+                    "Pour custard into each shell. There is no normalization to save you, consistency is key!",
+                    "Add custard to each shell. It's the science of even distribution."
+                ],
+                [
+                    "Preheat to 250°C. Even Swiss ovens can handle this.",
+                    "Heat the oven like you're preparing to fire someone.",
+                    "Set the oven to 250°C. It's time to run the code!"
+                ],
+                [
+                    "Bake for 10-12 minutes until golden with caramelized tops. Keep an eye on it—unlike your inbox.",
+                    "Bake until golden brown. Pretend is an award you are getting.",
+                    "Bake carefully. Over-baking is like micromanaging—it ruins everything."
+                ],
+                [
+                    "Cool the tarts for 10 minutes before serving. Patience is a virtue.",
+                    "Let the tarts cool, just like your nerves after a deadline.",
+                    "Cool them down for 10 minutes. It's the calm before the pastry storm."
+                ]
+            ]
+        };
+
+        let currentStepIndex = 0;
+        let currentPhase = [];
+        let phaseName = "";
+        let allPhases = Object.entries(steps);
+        let currentPhaseIndex = 0;
+
+        function viewIngredients() {
+            const ingredientsOutput = document.getElementById("ingredientsOutput");
+            ingredientsOutput.innerHTML = `
+                <h3>Ingredients:</h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    ${ingredients.map(item => `<li style="margin-bottom: 30px;">${item}</li>`).join("")}
+                </ul>`;
+                }
+
+        function startRecipe() {
+            currentStepIndex = 0;
+            currentPhaseIndex = 0;
+            currentPhase = allPhases[currentPhaseIndex][1];
+            phaseName = allPhases[currentPhaseIndex][0].charAt(0).toUpperCase() + allPhases[currentPhaseIndex][0].slice(1) + " Preparation";
+            document.getElementById("steps").innerHTML = ""; // Clear previous steps
+            showNextStep();
+            showNextButton();
+        }
+
+        function showNextStep() {
+            const stepsDiv = document.getElementById("steps");
+
+            if (currentStepIndex < currentPhase.length) {
+                const randomStep =
+                    currentPhase[currentStepIndex][
+                        Math.floor(Math.random() * currentPhase[currentStepIndex].length)
+                    ];
+
+                const stepElement = document.createElement("div");
+                stepElement.className = "step";
+                stepElement.innerHTML = `<p><strong>${phaseName} Step ${currentStepIndex + 1}:</strong> ${randomStep}</p>`;
+                stepsDiv.appendChild(stepElement);
+
+                currentStepIndex++;
+            } else {
+                if (currentPhaseIndex < allPhases.length - 1) {
+                    currentPhaseIndex++;
+                    currentPhase = allPhases[currentPhaseIndex][1];
+                    phaseName = allPhases[currentPhaseIndex][0].charAt(0).toUpperCase() + allPhases[currentPhaseIndex][0].slice(1) + " Preparation";
+                    currentStepIndex = 0;
+                    showNextStep();
+                } else {
+                    const completeElement = document.createElement("div");
+                    completeElement.className = "step";
+                    completeElement.innerHTML = `<p><strong>Recipe Complete!</strong> That's it! Pain is over. Be Honest? How do they look? Bring them to the core team meeting. You can't legally poison students, but you can poison us. Alternatively, just follow this <a href="https://leitesculinaria.com/7759/recipes-pasteis-de-nata.html" target="_blank">recipe</a> or next time you are in Lisbon buy them <a href="https://manteigaria.com/en/" target="_blank">here</a>.</p>`;
+                    stepsDiv.appendChild(completeElement);
+                    hideNextButton();
+                }
+            }
+        }
+
+        function nextStep() {
+            showNextStep();
+        }
+
+        function showNextButton() {
+            document.getElementById("nextButton").style.display = "block";
+        }
+
+        function hideNextButton() {
+            document.getElementById("nextButton").style.display = "none";
+        }
+    </script>
+</body>
+</html>
+
