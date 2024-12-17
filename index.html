@@ -6,82 +6,91 @@
     <title>Pastéis de Nata Recipe Assistant</title>
     <style>
         body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #FAF3E0; /* Light creamy white */
-        color: #5A3825; /* Dark brown */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #FAF3E0; /* Default Light Style */
+            color: #5A3825; /* Default Dark Brown */
+            transition: all 0.3s ease;
         }
-
         .container {
-        max-width: 95%;
-        margin: 50px auto;
-        padding: 20px;
-        background: #FAF3E0; /* Match background for a clean look */
-        border-radius: 8px;
-        display: flex;
-        gap: 20px;
+            max-width: 95%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #F8D99A; /* Default Beige */
+            border: 1px solid #C58929;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
-
-        .section {
-        flex: 1;
-        padding: 20px;
-        background: #F8D99A; /* Warm golden beige */
-        border: 1px solid #C58929; /* Complementary darker golden yellow */
-        border-radius: 8px;
-        min-height: 300px;
-        }
-
         h1, h2 {
-        text-align: center;
-        color: #5A3825; /* Dark brown */
+            text-align: center;
+            color: inherit;
         }
-
         button {
-        display: block;
-        width: 100%;
-        margin: 10px 0;
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        background-color: #E2A53C; /* Deep golden yellow */
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #E2A53C;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-
         button:hover {
-        background-color: #C58929; /* Slightly darker golden yellow */
+            background-color: #C58929;
         }
-
         .output {
-        margin-top: 20px;
+            margin-top: 20px;
+            color: inherit;
         }
-
         .step {
-        margin-bottom: 10px;
-        color: #5A3825; /* Dark brown */
+            margin-bottom: 10px;
+            color: inherit;
+        }
+        a {
+            color: inherit;
+        }
+        /* Terminal Style */
+        .terminal {
+            background-color: #1E1E1E;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .terminal .container {
+            background-color: #000;
+            border-color: #00FF00;
+        }
+        .terminal button {
+            background-color: #000;
+            color: #00FF00;
+            border: 1px solid #00FF00;
+        }
+        .terminal button:hover {
+            background-color: #444;
         }
     </style>
 </head>
 <body>
     <h1>Pastéis de Nata Recipe Random Steps Generator</h1>
+    <button onclick="toggleStyle()">Baking Matrix Style</button>
     <div class="container">
         <!-- Ingredients Section -->
         <div class="section" id="ingredientsSection">
             <h2>Ingredients</h2>
-            <button onclick="viewIngredients()">View Ingredients</button>
+            <button onclick="viewIngredients()">> VIEW INGREDIENTS</button>
             <div id="ingredientsOutput" class="output"></div>
         </div>
         <!-- Recipe Steps Section -->
         <div class="section" id="recipeSection">
             <h2>Recipe Steps</h2>
-            <button onclick="startRecipe()">Start Recipe</button>
+            <button onclick="startRecipe()">> START RECIPE</button>
             <div id="stepsOutput" class="output">
                 <h3>Steps:</h3>
                 <div id="steps"></div>
-                <button id="nextButton" style="display:none;" onclick="nextStep()">Next Step</button>
+                <button id="nextButton" style="display:none;" onclick="nextStep()">> NEXT STEP</button>
             </div>
         </div>
     </div>
@@ -155,7 +164,7 @@
                 [
                     "Cook the custard over low heat until thickened. Stir constantly to avoid curdling, pretend it is a PhD student getting ready to defend.",
                     "Stir the custard on low heat—it's not a sprint, it's a marathon, like some of the never ending projects.",
-                    "Cook on low heat until it thickens. No shortcuts allowed, even if a researchers wants it fast!"
+                    "Cook on low heat until it thickens. No shortcuts allowed, even if a researcher wants it fast!"
                 ],
                 [
                     "Cool the custard to room temperature. It needs to chill before it delivers the results.",
@@ -186,7 +195,7 @@
                 ],
                 [
                     "Bake for 10-12 minutes until golden with caramelized tops. Keep an eye on it—unlike your inbox.",
-                    "Bake until golden brown. Pretend is an award you are getting.",
+                    "Bake until golden brown. Pretend it's an award you are getting.",
                     "Bake carefully. Over-baking is like micromanaging—it ruins everything."
                 ],
                 [
@@ -202,15 +211,16 @@
         let phaseName = "";
         let allPhases = Object.entries(steps);
         let currentPhaseIndex = 0;
+        let isTerminal = false;
 
         function viewIngredients() {
             const ingredientsOutput = document.getElementById("ingredientsOutput");
             ingredientsOutput.innerHTML = `
                 <h3>Ingredients:</h3>
                 <ul style="list-style: none; padding: 0; margin: 0;">
-                    ${ingredients.map(item => `<li style="margin-bottom: 30px;">${item}</li>`).join("")}
+                    ${ingredients.map(item => `<li style="margin-bottom: 10px;">${item}</li>`).join("")}
                 </ul>`;
-                }
+        }
 
         function startRecipe() {
             currentStepIndex = 0;
@@ -265,7 +275,16 @@
         function hideNextButton() {
             document.getElementById("nextButton").style.display = "none";
         }
+
+        function toggleStyle() {
+            const body = document.body;
+            isTerminal = !isTerminal;
+            if (isTerminal) {
+                body.classList.add("terminal");
+            } else {
+                body.classList.remove("terminal");
+            }
+        }
     </script>
 </body>
 </html>
-
